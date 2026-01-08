@@ -1,6 +1,6 @@
 import sys, datetime
 from view.view import ViewBotiga
-from model.model import ModelBotiga
+from model.model import ModelBotiga, Producte
 
 class Botiga:
 
@@ -73,7 +73,7 @@ class Botiga:
     def mostrar_cistella(self):
         if self.client:
             if self.cistella:
-                self.view.show_products(self.cistella)
+                self.view.show_products(list(self.cistella.values()))
             else:
                 self.view.show_message("Cistella buida")
         else:
@@ -84,15 +84,16 @@ class Botiga:
     def comprar(self):
         if self.client is not None:
             if self.mostrar_productes():
-                id = int( self.view.ask_input("Escull un id de producte: ") )
+                id = self.view.ask_input("Escull un id de producte: ")
 
                 p = self.model.find_producte(id)
 
                 if p is not None:
-                    quantitat = int( self.view.ask_input("Escull quantitat de producte") )
+                    quantitat = int( self.view.ask_input("Escull quantitat de producte: ") )
                     if p.stock - quantitat >= 0:
                         p.stock -= quantitat
-                        self.cistella[p.id] = p
+                        p2 = Producte(p.id, p.desc,p.pvp, quantitat)
+                        self.cistella[p2.id] = p2
                     else:
                         self.view.show_message("Quantitat invàlida")
                 else:

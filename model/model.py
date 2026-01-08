@@ -29,13 +29,16 @@ class Producte:
         self.pvp = pvp
         self.stock = stock
 
+    def total(self):
+        return self.pvp * self.stock
+
     def __str__(self):
         return f"{self.id} - {self.desc} - {self.pvp}€ - {self.stock}"
     
     @classmethod
     def from_csv(cls, string):
         l = string.split(";")
-        return cls(l[0],l[1],l[2],l[3])
+        return cls(l[0],l[1],float(l[2]),int(l[3]))
     
     def to_csv(self):
         return f"{self.id};{self.desc};{self.pvp};{self.stock};\n"
@@ -72,7 +75,7 @@ class ModelBotiga:
         else:
             return 0
 
-    def find_producte(self, id: int):
+    def find_producte(self, id):
         for k, v in self.productes.items():
             if k == id:
                 return v
@@ -133,6 +136,7 @@ class ModelBotiga:
             for l in data:
                 p = Producte.from_csv(l)
                 self.productes[p.id] = p
+            print(self.productes)
         except FileNotFoundError:
             self.productes = {}
             f = open(self.product_file, "x")
