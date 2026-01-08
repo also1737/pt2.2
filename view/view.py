@@ -22,7 +22,7 @@ class ViewBotiga:
             opt = -1
 
         return opt
-    
+
     def show_message(self, message):
         print(message)
 
@@ -33,4 +33,7 @@ class ViewBotiga:
     def show_products(self, data):
         print("ID - Nom - Preu/Unitat - Quantitat en stock")
         for producte in data:
-            print(producte.__str__())
+            print(producte)
+
+    def show_factura(self, factura):
+        pass

@@ -41,12 +41,19 @@ class Producte:
         return f"{self.id};{self.desc};{self.pvp};{self.stock};\n"
 
 
+class Factura:
+
+    def __init__(self, client_dni, date, products):
+        self.client_dni = client_dni
+        self.date = date
+        self.products = products
+
 
 class ModelBotiga:
 
     def __init__(self):
         self.client_file = "data/client.txt"
-        self.product_file = "data/client.txt"
+        self.product_file = "data/producte.txt"
         self.clients = {}
         self.productes = {}
         self.read()
@@ -120,7 +127,7 @@ class ModelBotiga:
         Si l'arxiu no existeix, crea un de nou.
         """
         try:
-            f = open(self.product_file, "r")
+            f = open(self.product_file)
             data = f.readlines()
 
             for l in data:
@@ -128,17 +135,17 @@ class ModelBotiga:
                 self.productes[p.id] = p
         except FileNotFoundError:
             self.productes = {}
-            f = open(self.product_file, "w")
+            f = open(self.product_file, "x")
             f.close()
 
 
         try:
-            f = open(self.client_file, "r")
+            f = open(self.client_file)
             data = f.readlines()
             for l in data:
                 p = Client.from_csv(l)
                 self.clients[p.dni] = p
         except FileNotFoundError:
             self.clients = {}
-            f = open(self.client_file, "w")
+            f = open(self.client_file, "x")
             f.close()
